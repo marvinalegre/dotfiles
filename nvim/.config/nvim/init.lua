@@ -16,7 +16,7 @@ vim.g.have_nerd_font = false
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.o.relativenumber = true
+vim.o.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = "a"
@@ -92,7 +92,16 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.diagnostic.config({
 	update_in_insert = false,
 	severity_sort = true,
-	float = { border = "rounded", source = "if_many" },
+	float = {
+		border = "rounded",
+		source = "if_many",
+		format = function(diagnostic)
+			return string.format("%s (%s) [%s]", diagnostic.message, diagnostic.source, diagnostic.code or "")
+		end,
+		-- This is the key part for wrapping
+		max_width = 80,
+		wrap = true,
+	},
 	underline = { severity = vim.diagnostic.severity.ERROR },
 
 	-- Can switch between these as you prefer
@@ -104,6 +113,7 @@ vim.diagnostic.config({
 })
 
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+vim.keymap.set("n", "<leader>w", vim.diagnostic.open_float, { desc = "[w] Open float" })
 
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
@@ -120,6 +130,14 @@ vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left wind
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+
+vim.keymap.set(
+	"n",
+	"<leader>is",
+	"oawait new Promise(resolve => setTimeout(resolve, 2000))<Esc>",
+	{ desc = "Insert JS sleep line" }
+)
+vim.keymap.set("n", "<leader>ih", "oconsole.log('hit');<Esc>", { desc = "Insert hit line" })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -164,6 +182,39 @@ rtp:prepend(lazypath)
 require("lazy").setup({
 	-- NOTE: Plugins can be added via a link or github org/name. To run setup automatically, use `opts = {}`
 	{ "NMAC427/guess-indent.nvim", opts = {} },
+
+	{
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = function()
+			local harpoon = require("harpoon")
+
+			-- REQUIRED
+			harpoon:setup()
+			-- REQUIRED
+
+			vim.keymap.set("n", "<leader>a", function()
+				harpoon:list():add()
+			end, { desc = "[A]dd a file to the harpoon list" })
+			vim.keymap.set("n", "<C-e>", function()
+				harpoon.ui:toggle_quick_menu(harpoon:list())
+			end)
+
+			vim.keymap.set("n", "<leader>1", function()
+				harpoon:list():select(1)
+			end, { desc = "[1] harpoon" })
+			vim.keymap.set("n", "<leader>2", function()
+				harpoon:list():select(2)
+			end, { desc = "[2] harpoon" })
+			vim.keymap.set("n", "<leader>3", function()
+				harpoon:list():select(3)
+			end, { desc = "[3] harpoon" })
+			vim.keymap.set("n", "<leader>4", function()
+				harpoon:list():select(4)
+			end, { desc = "[4] harpoon" })
+		end,
+	},
 
 	-- Alternatively, use `config = function() ... end` for full control over the configuration.
 	-- If you prefer to call `setup` explicitly, use:
@@ -313,6 +364,7 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
 			vim.keymap.set({ "n", "v" }, "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
 			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
+			vim.keymap.set("n", "<leader>si", builtin.git_files, { desc = "[S]earch G[I]t files" })
 			vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
 			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
