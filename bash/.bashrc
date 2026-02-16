@@ -111,6 +111,12 @@ fi
 source ~/.config/bash/tokyonight.sh
 bind '"\C-f":"tmux-sessionizer\n"'
 
+br() {
+    # If no argument is given, default to 5 (50%)
+    local val=${1:-5}
+    brightnessctl set "${val}0%" >/dev/null
+}
+
 # fnm
 FNM_PATH="/home/ma/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
