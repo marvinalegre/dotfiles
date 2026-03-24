@@ -755,6 +755,7 @@ require("lazy").setup({
 				typescript = { "prettierd" },
 				typescriptreact = { "prettierd" },
 				htmlangular = { "prettierd" },
+				sql = { "sql_formatter" },
 			},
 		},
 	},
