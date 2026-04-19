@@ -757,6 +757,14 @@ require("lazy").setup({
 				htmlangular = { "prettierd" },
 				markdown = { "prettierd" },
 				sql = { "sql_formatter" },
+				java = { "google_java_format" },
+			},
+			formatters = {
+				google_java_format = {
+					command = "google-java-format",
+					args = { "-" },
+					stdin = true,
+				},
 			},
 		},
 	},
