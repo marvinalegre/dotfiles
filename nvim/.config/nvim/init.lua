@@ -138,6 +138,7 @@ vim.keymap.set(
 	{ desc = "Insert JS sleep line" }
 )
 vim.keymap.set("n", "<leader>ih", "oconsole.log('hit');<Esc>", { desc = "Insert hit line" })
+vim.keymap.set("n", "<leader>ic", "oconsole.log()<Left>", { desc = "Insert console log" })
 
 vim.keymap.set("n", "<leader>np", "<cmd>NoNeckPain<cr>", { desc = "Toggle NoNeckPain" })
 
