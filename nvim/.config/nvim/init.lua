@@ -760,12 +760,18 @@ require("lazy").setup({
 				sql = { "sql_formatter" },
 				java = { "google_java_format" },
 				c = { "clang-format" },
+				sh = { "shfmt" },
+				bash = { "shfmt" },
 			},
 			formatters = {
 				google_java_format = {
 					command = "google-java-format",
 					args = { "-" },
 					stdin = true,
+				},
+				shfmt = {
+					command = "shfmt",
+					args = { "-i", "2", "-filename", "$FILENAME" },
 				},
 			},
 		},
