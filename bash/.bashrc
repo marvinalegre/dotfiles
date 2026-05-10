@@ -109,7 +109,7 @@ fi
 
 source ~/.config/bash/tokyonight.sh
 bind '"\C-f":"tmux-sessionizer\n"'
-bind '"\K":"clear\n"'
+bind '"\C-k":"clear\n"'
 
 br() {
   # If no argument is given, default to 5 (50%)
