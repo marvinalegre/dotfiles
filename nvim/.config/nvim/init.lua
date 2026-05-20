@@ -142,6 +142,10 @@ vim.keymap.set("n", "<leader>ic", "oconsole.log()<Left>", { desc = "Insert conso
 
 vim.keymap.set("n", "<leader>np", "<cmd>NoNeckPain<cr>", { desc = "Toggle NoNeckPain" })
 
+vim.keymap.set("n", "<leader>e", function()
+	vim.cmd("Rexplore")
+end, { desc = "Toggle netrw explorer" })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
