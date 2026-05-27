@@ -470,6 +470,14 @@ require("lazy").setup({
 		end,
 	},
 
+	{
+		"nvim-java/nvim-java",
+		config = function()
+			require("java").setup()
+			vim.lsp.enable("jdtls")
+		end,
+	},
+
 	-- LSP Plugins
 	{
 		-- Main LSP Configuration

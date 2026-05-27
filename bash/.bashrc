@@ -125,3 +125,6 @@ if [ -d "$FNM_PATH" ]; then
 fi
 
 . "$HOME/.cargo/env"
+
+export JAVA_HOME=/opt/jdk-26.0.1
+export PATH=$JAVA_HOME/bin:$PATH
