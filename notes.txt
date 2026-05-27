@@ -1,0 +1,3 @@
+to persist the swap of escape and caps lock in the keyboard
+over bluetooth, I added the following line in /etc/default/keyboard
+setxkbmap -option caps:swapescape
