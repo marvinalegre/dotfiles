@@ -6,3 +6,6 @@ alias s='systemctl suspend'
 
 alias ciaclean='git branch --merged origin/main | grep -vE "^\s*(\*|main|develop)" | xargs -n 1 git branch -d'
 alias st='git st'
+alias d='git diff'
+alias a='git add'
+alias ci='git ci'
