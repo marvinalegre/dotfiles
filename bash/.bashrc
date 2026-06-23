@@ -128,3 +128,11 @@ fi
 
 export JAVA_HOME=/opt/jdk-26.0.1
 export PATH=$JAVA_HOME/bin:$PATH
+
+# pnpm
+export PNPM_HOME="/home/ma/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
