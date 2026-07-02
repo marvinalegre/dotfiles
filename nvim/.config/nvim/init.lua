@@ -620,6 +620,15 @@ do
 	vim.keymap.set("n", "<leader>sn", function()
 		builtin.find_files({ cwd = vim.fn.stdpath("config"), follow = true })
 	end, { desc = "[S]earch [N]eovim files" })
+
+	vim.pack.add({
+		gh("stevearc/oil.nvim"),
+	})
+	require("oil").setup({
+		default_file_explorer = true,
+	})
+
+	vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 end
 
 -- ============================================================
