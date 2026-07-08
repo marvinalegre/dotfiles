@@ -874,6 +874,7 @@ do
 				c = true,
 				sh = true,
 				bash = true,
+				xml = true,
 			}
 			if enabled_filetypes[vim.bo[bufnr].filetype] then
 				return { timeout_ms = 500 }
@@ -904,6 +905,7 @@ do
 			c = { "clang-format" },
 			sh = { "shfmt" },
 			bash = { "shfmt" },
+			xml = { "xmlformatter" },
 		},
 	})
 
