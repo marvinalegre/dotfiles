@@ -253,6 +253,7 @@ do
 	)
 	vim.keymap.set("n", "<leader>ih", "oconsole.log('hit');<Esc>", { desc = "Insert hit line" })
 	vim.keymap.set("n", "<leader>ic", "oconsole.log()<Left>", { desc = "Insert console log" })
+	vim.keymap.set("n", "<leader>ib", "oborder: 1px solid black;<Esc>", { desc = "Insert css border" })
 
 	-- [[ Basic Autocommands ]]
 	--  See `:help lua-guide-autocommands`
