@@ -129,7 +129,9 @@ fi
 # pnpm
 export PNPM_HOME="/home/ma/.local/share/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME/bin:"*) ;;
-  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+*":$PNPM_HOME/bin:"*) ;;
+*) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
+
+export PATH="$HOME/.local/bin:$PATH"

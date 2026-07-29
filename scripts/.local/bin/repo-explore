@@ -1,0 +1,32 @@
+#!/usr/bin/bash
+
+echo repo exploration
+#source
+#https://piechowski.io/post/git-commands-before-reading-code/
+
+echo "────────────────"
+
+echo what changes the most
+git log --format=format: --name-only --since="1 year ago" | sort | uniq -c | sort -nr | head -20
+
+echo "────────────────"
+
+echo who built this
+git shortlog -sn --no-merges | head -20
+
+echo "────────────────"
+
+echo where do bugs cluster
+git log -i -E --grep="fix|bug|broken" --name-only --format='' | sort | uniq -c | sort -nr | head -20
+
+
+echo "────────────────"
+
+echo is this project accelerating or dying
+git log --format='%ad' --date=format:'%Y-%m' | sort | uniq -c
+
+echo "────────────────"
+
+echo how often is the team firefighting
+git log --oneline --since="1 year ago" | grep -iE 'revert|hotfix|emergency|rollback'
+
