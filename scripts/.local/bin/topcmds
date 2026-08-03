@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+#
+# history_histogram.sh
+# Turns your bash history into a histogram of most-used commands.
+#
+# Usage:
+#   ./history_histogram.sh [N]
+#
+#   N = number of top commands to show (default: 20)
+#
+# Notes:
+#   - Reads from ~/.bash_history by default. If you want the *current*
+#     shell session's in-memory history (including commands not yet
+#     flushed to disk), run this as:  history | ./history_histogram.sh
+#   - Only looks at the first word of each command (e.g. "git" from
+#     "git commit -m ...") since that's usually what people mean by
+#     "most used commands".
+
+set -euo pipefail
+
+TOP_N="${1:-20}"
+
+# Decide where to read history from: stdin (piped) or the history file.
+if [ -p /dev/stdin ]; then
+	INPUT=$(cat)
+else
+	HISTFILE="${HISTFILE:-$HOME/.bash_history}"
+	if [ ! -f "$HISTFILE" ]; then
+		echo "No history file found at $HISTFILE" >&2
+		exit 1
+	fi
+	INPUT=$(cat "$HISTFILE")
+fi
+
+# Strip:
+#   - leading history numbers (if piped from `history`, format is "  123  git status")
+#   - leading whitespace
+# Then grab the first word (the command itself) and count occurrences.
+COUNTS=$(echo "$INPUT" |
+	sed -E 's/^[[:space:]]*[0-9]+[[:space:]]+//' |
+	awk '{print $1}' |
+	grep -v '^$' |
+	sort |
+	uniq -c |
+	sort -rn |
+	head -n "$TOP_N")
+
+if [ -z "$COUNTS" ]; then
+	echo "No commands found in history." >&2
+	exit 0
+fi
+
+MAX_COUNT=$(echo "$COUNTS" | awk '{print $1}' | sort -rn | head -1)
+BAR_WIDTH=40 # max width in characters for the longest bar
+
+echo "Top $TOP_N commands from your history:"
+echo
+
+echo "$COUNTS" | while read -r count cmd; do
+	# scale bar length relative to the max count
+	bar_len=$((count * BAR_WIDTH / MAX_COUNT))
+	[ "$bar_len" -lt 1 ] && bar_len=1
+	bar=$(printf '%*s' "$bar_len" '' | tr ' ' '#')
+	printf "%-15s %6d | %s\n" "$cmd" "$count" "$bar"
+done
