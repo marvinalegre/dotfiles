@@ -22,3 +22,13 @@
 	ts = status
 
 	l = log --oneline
+
+	s = stash
+	sl = stash list
+	sp = stash pop
+	sa = stash apply
+
+	p = push origin main
+
+	r = restore .
+	rs = restore --staged .
