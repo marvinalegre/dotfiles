@@ -53,13 +53,14 @@ fi
 MAX_COUNT=$(echo "$COUNTS" | awk '{print $1}' | sort -rn | head -1)
 BAR_WIDTH=40 # max width in characters for the longest bar
 
-echo "Top $TOP_N commands from your history:"
-echo
-
-echo "$COUNTS" | while read -r count cmd; do
-	# scale bar length relative to the max count
-	bar_len=$((count * BAR_WIDTH / MAX_COUNT))
-	[ "$bar_len" -lt 1 ] && bar_len=1
-	bar=$(printf '%*s' "$bar_len" '' | tr ' ' '#')
-	printf "%-15s %6d | %s\n" "$cmd" "$count" "$bar"
-done
+{
+	echo "Top $TOP_N commands from your history:"
+	echo
+	echo "$COUNTS" | while read -r count cmd; do
+		# scale bar length relative to the max count
+		bar_len=$((count * BAR_WIDTH / MAX_COUNT))
+		[ "$bar_len" -lt 1 ] && bar_len=1
+		bar=$(printf '%*s' "$bar_len" '' | tr ' ' '#')
+		printf "%-15s %6d | %s\n" "$cmd" "$count" "$bar"
+	done
+} | less
