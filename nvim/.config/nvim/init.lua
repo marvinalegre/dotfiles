@@ -630,6 +630,9 @@ do
 			width = 0.70, -- width will be 85% of the editor width
 		},
 	})
+	vim.keymap.set("n", "<leader>z", "<cmd>ZenMode<CR>", {
+		desc = "Toggle Zen Mode",
+	})
 
 	vim.pack.add({
 		gh("stevearc/oil.nvim"),
