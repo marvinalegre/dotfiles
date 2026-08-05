@@ -32,7 +32,7 @@ alias sw='git switch'
 alias swc='git switch -c'
 
 # pull/push
-alias p='git push'
+alias p='git push origin main'
 alias pl='git pull'
 
 # fetch/prune
