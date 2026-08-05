@@ -117,6 +117,10 @@ br() {
   brightnessctl set "${val}0%" >/dev/null
 }
 
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+
 # fnm
 FNM_PATH="/home/ma/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
