@@ -623,6 +623,15 @@ do
 	end, { desc = "[S]earch [N]eovim files" })
 
 	vim.pack.add({
+		gh("folke/zen-mode.nvim"),
+	})
+	require("zen-mode").setup({
+		window = {
+			width = 0.70, -- width will be 85% of the editor width
+		},
+	})
+
+	vim.pack.add({
 		gh("stevearc/oil.nvim"),
 	})
 	require("oil").setup({
