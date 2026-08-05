@@ -121,6 +121,10 @@ mkcd() {
   mkdir -p "$1" && cd "$1"
 }
 
+gt() {
+  pass -c github/token
+}
+
 # fnm
 FNM_PATH="/home/ma/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
