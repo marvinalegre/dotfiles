@@ -25,10 +25,14 @@
 
 	s = stash
 	sl = stash list
+	ls = stash list
 	sp = stash pop
+	ps = stash pop
 	sa = stash apply
+	as = stash apply
 
 	p = push origin main
 
 	r = restore .
 	rs = restore --staged .
+	sr = restore --staged .
