@@ -1,6 +1,4 @@
-alias ll='ls -l'
-alias la='ls -A'
-alias al='ls -A'
+alias ll='ls -lh'
 alias l='ls -lah'
 
 alias o='open'
