@@ -627,11 +627,17 @@ do
 	})
 	require("zen-mode").setup({
 		window = {
-			width = 0.70, -- width will be 85% of the editor width
+			width = 0.7,
 		},
 	})
 	vim.keymap.set("n", "<leader>z", "<cmd>ZenMode<CR>", {
 		desc = "Toggle Zen Mode",
+	})
+	vim.keymap.set("n", "<leader>q", "<cmd>qa<cr>", { desc = "Quit Neovim" })
+	vim.api.nvim_create_autocmd("VimEnter", {
+		callback = function()
+			vim.cmd("ZenMode")
+		end,
 	})
 
 	vim.pack.add({
