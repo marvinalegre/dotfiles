@@ -112,8 +112,8 @@ bind '"\C-f":"tmux-sessionizer\n"'
 bind '"\C-k":"clear\n"'
 
 br() {
-  # If no argument is given, default to 5 (50%)
-  local val=${1:-5}
+  # If no argument is given, default to 2 (20%)
+  local val=${1:-2}
   brightnessctl set "${val}0%" >/dev/null
 }
 
