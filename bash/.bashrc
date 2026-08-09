@@ -126,16 +126,16 @@ gt() {
 }
 
 # fnm
-FNM_PATH="/home/ma/.local/share/fnm"
+FNM_PATH="/home/marvin/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
   export PATH="$FNM_PATH:$PATH"
-  eval "$(fnm env)"
+  eval "$(fnm env --shell bash)"
 fi
 
 . "$HOME/.cargo/env"
 
 # pnpm
-export PNPM_HOME="/home/ma/.local/share/pnpm"
+export PNPM_HOME="/home/marvin/.local/share/pnpm"
 case ":$PATH:" in
 *":$PNPM_HOME/bin:"*) ;;
 *) export PATH="$PNPM_HOME/bin:$PATH" ;;
