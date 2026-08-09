@@ -1,3 +1,30 @@
-to persist the swap of escape and caps lock in the keyboard
-over bluetooth, I added the following line in /etc/default/keyboard
-setxkbmap -option caps:swapescape
+installs are done via apt by default.
+
+install chrome via .deb file they provide.
+install keepassxc, gimp via gnome software.
+install i3-wm.
+rename usual dirs in ~/.
+copy .kdbx file from backup/.
+sign in to google chrome and workspaces.
+set chrome default zoom to 150%, change theme.
+log in to github.
+install stow, git, alacritty, rofi, pass, tmux, curl, brightnessctl.
+clone marvinalegre/dotfiles to ~/.dotfiles.
+clone theprimeagen/tmux-sessionizer to /opt/tmux-sessionizer.
+stow git, scripts, tmux, tmux-sessionizer, alacritty, bash.
+stow i3 then reload i3 with this command: i3-msg reload.
+stow x11 then reboot.
+copy .gnupg/, .password-store from backup/.
+stow gnupg.
+
+fix fonts using these commands:
+mkdir -p ~/.local/share/fonts
+cd ~/.local/share/fonts
+curl -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip -o JetBrainsMono.zip
+unzip JetBrainsMono.zip
+rm JetBrainsMono.zip
+fc-cache -fv
+
+install nvim to /opt then create its symlink in /usr/local/bin.
+stow nvim.
+nvim checkhealth.
