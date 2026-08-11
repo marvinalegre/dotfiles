@@ -108,6 +108,10 @@ if ! shopt -oq posix; then
 fi
 
 source ~/.config/bash/tokyonight.sh
+
+source /usr/share/doc/fzf/examples/key-bindings.bash
+export FZF_CTRL_R_OPTS='--height=100%'
+
 bind '"\C-f":"tmux-sessionizer\n"'
 bind '"\C-k":"clear\n"'
 
