@@ -3,7 +3,7 @@ alias l='ls -lah'
 
 alias o='open'
 
-alias sus='systemctl suspend'
+alias sus='i3lock & systemctl suspend'
 
 # navigation/status
 alias g='git'
