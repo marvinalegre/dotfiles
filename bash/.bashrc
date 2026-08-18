@@ -129,6 +129,18 @@ gt() {
   pass -c github/token
 }
 
+t() {
+  c ~/desktop/todo.md
+}
+
+cdzk() {
+  cd ~/zettelkasten/
+}
+
+v() {
+  find ~/zettelkasten/ -type f | fzf
+}
+
 # fnm
 FNM_PATH="/home/marvin/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
