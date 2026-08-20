@@ -138,7 +138,15 @@ cdzk() {
 }
 
 v() {
-  find ~/zettelkasten/ -type f | fzf
+  local file
+  file=$(find ~/zettelkasten -type f | fzf) || return
+  c "$file"
+}
+
+b() {
+  local file
+  file=$(find ~/projects/basicsofx/src/pages -type f | fzf) || return
+  c "$file"
 }
 
 # fnm
