@@ -149,6 +149,12 @@ b() {
   c "$file"
 }
 
+tmp() {
+  cd ~/desktop/
+  mkcd tmp$1
+  tmux new -s tmp$1
+}
+
 # fnm
 FNM_PATH="/home/marvin/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
