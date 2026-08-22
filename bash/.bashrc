@@ -150,9 +150,20 @@ b() {
 }
 
 tmp() {
-  cd ~/desktop/
-  mkcd tmp$1
-  tmux new -s tmp$1
+  cd ~/desktop/ || return
+
+  local i=0
+  local dir="tmp"
+
+  while [ -e "$dir" ]; do
+    ((i++))
+    dir="tmp$i"
+  done
+  echo $dir
+
+  mkdir "$dir"
+  cd "$dir" || return
+  tmux new -s "$dir"
 }
 
 # fnm
