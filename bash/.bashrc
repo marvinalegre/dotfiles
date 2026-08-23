@@ -125,18 +125,6 @@ mkcd() {
   mkdir -p "$1" && cd "$1"
 }
 
-gt() {
-  pass -c github/token
-}
-
-t() {
-  c ~/desktop/todo.md
-}
-
-cdzk() {
-  cd ~/zettelkasten/
-}
-
 v() {
   local file
   file=$(find ~/zettelkasten -type f | fzf) || return
@@ -164,14 +152,6 @@ tmp() {
   mkdir "$dir"
   cd "$dir" || return
   tmux new -s "$dir"
-}
-
-dict() {
-  kiwix-desktop ~/media/kiwix/wiktionary_en_all_nopic_2026-05.zim
-}
-
-wiki() {
-  kiwix-desktop ~/media/kiwix/wikipedia_en_all_nopic_2026-06.zim
 }
 
 # fnm

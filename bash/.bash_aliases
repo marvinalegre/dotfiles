@@ -1,11 +1,12 @@
 alias ll='ls -lh'
 alias l='ls -lah'
-
 alias o='open'
-
-alias sus='i3lock & systemctl suspend'
-
 alias p='pnpm'
+alias sus='i3lock & systemctl suspend'
+alias wiki='kiwix-desktop ~/media/kiwix/wikipedia_en_all_nopic_2026-06.zim'
+alias dict='kiwix-desktop ~/media/kiwix/wiktionary_en_all_nopic_2026-05.zim'
+alias gt='pass -c github/token'
+alias t='c ~/desktop/todo.md'
 
 # navigation/status
 alias g='git'
