@@ -143,7 +143,7 @@ v() {
   c "$file"
 }
 
-b() {
+box() {
   local file
   file=$(find ~/projects/basicsofx/src/pages -type f | fzf) || return
   c "$file"

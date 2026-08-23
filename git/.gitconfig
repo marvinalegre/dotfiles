@@ -7,32 +7,3 @@
 
 [init]
 	defaultBranch = main
-
-[alias]
-	co = checkout
-	oc = checkout
-
-	br = branch
-	rb = branch
-
-	ci = commit
-	ic = commit
-
-	st = status
-	ts = status
-
-	l = log --oneline
-
-	s = stash
-	sl = stash list
-	ls = stash list
-	sp = stash pop
-	ps = stash pop
-	sa = stash apply
-	as = stash apply
-
-	p = push origin main
-
-	r = restore .
-	rs = restore --staged .
-	sr = restore --staged .

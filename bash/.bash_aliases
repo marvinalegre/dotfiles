@@ -5,6 +5,8 @@ alias o='open'
 
 alias sus='i3lock & systemctl suspend'
 
+alias p='pnpm'
+
 # navigation/status
 alias g='git'
 alias s='git status -sb'
@@ -26,15 +28,16 @@ alias d='git diff'
 alias dc='git diff --cached'
 
 # branching
+alias b='git branch'
 alias sw='git switch'
 alias swc='git switch -c'
 
 # pull/push
-alias p='git push origin main'
-alias pl='git pull'
+alias push='git push origin main'
+# alias pl='git pull'
 
 # fetch/prune
-alias f='git fetch --prune'
+# alias f='git fetch --prune'
 
 # etc
 alias ciaclean='git branch --merged origin/main | grep -vE "^\s*(\*|main|develop)" | xargs -n 1 git branch -d'
