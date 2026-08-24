@@ -213,7 +213,7 @@ do
 		},
 	})
 
-	vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+	vim.keymap.set("n", "<leader>l", vim.diagnostic.setloclist, { desc = "Open diagnostic quickfix [L]ist" })
 	vim.keymap.set("n", "<leader>w", vim.diagnostic.open_float, { desc = "[w] Open float" })
 
 	-- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
@@ -633,7 +633,7 @@ do
 	vim.keymap.set("n", "<leader>z", "<cmd>ZenMode<CR>", {
 		desc = "Toggle Zen Mode",
 	})
-	vim.keymap.set("n", "<leader>q", "<cmd>qa<cr>", { desc = "Quit Neovim" })
+	vim.keymap.set("n", "<leader>q", "<cmd>qa<cr>", { desc = "[Q]uit Neovim" })
 	vim.api.nvim_create_autocmd("VimEnter", {
 		callback = function()
 			vim.cmd("ZenMode")
