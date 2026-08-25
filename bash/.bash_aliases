@@ -10,6 +10,7 @@ alias dict='kiwix-desktop ~/media/kiwix/wiktionary_en_all_nopic_2026-05.zim'
 alias gt='pass -c github/token'
 alias ru='nmcli radio wifi on'
 alias rd='nmcli radio wifi off'
+alias zi='cd ~/zettelkasten/; c'
 
 # navigation/status
 alias g='git'

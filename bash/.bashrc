@@ -125,7 +125,7 @@ mkcd() {
   mkdir -p "$1" && cd "$1"
 }
 
-v() {
+z() {
   local file
   file=$(find ~/zettelkasten -type f | fzf) || return
   c "$file"
