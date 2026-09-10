@@ -634,11 +634,11 @@ do
 		desc = "Toggle Zen Mode",
 	})
 	vim.keymap.set("n", "<leader>q", "<cmd>qa<cr>", { desc = "[Q]uit Neovim" })
-	vim.api.nvim_create_autocmd("VimEnter", {
-		callback = function()
-			vim.cmd("ZenMode")
-		end,
-	})
+	-- vim.api.nvim_create_autocmd("VimEnter", {
+	-- 	callback = function()
+	-- 		vim.cmd("ZenMode")
+	-- 	end,
+	-- })
 
 	vim.pack.add({
 		gh("stevearc/oil.nvim"),
@@ -791,6 +791,8 @@ do
 		--
 		-- But for many setups, the LSP (`ts_ls`) will work just fine
 		ts_ls = {},
+
+		cssls = {},
 
 		stylua = {}, -- Used to format Lua code
 
