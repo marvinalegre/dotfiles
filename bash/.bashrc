@@ -112,6 +112,8 @@ source ~/.config/bash/tokyonight.sh
 source /usr/share/doc/fzf/examples/key-bindings.bash
 export FZF_CTRL_R_OPTS='--height=100%'
 
+bind -x '"\C-k": clear'
+
 br() {
   # If no argument is given, default to 2 (20%)
   local val=${1:-2}
