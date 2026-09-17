@@ -794,6 +794,8 @@ do
 
 		cssls = {},
 
+		intelephense = {},
+
 		stylua = {}, -- Used to format Lua code
 
 		-- Special Lua Config, as recommended by neovim help docs
@@ -880,6 +882,7 @@ do
 			local enabled_filetypes = {
 				lua = true,
 				-- python = true,
+				php = true,
 				html = true,
 				css = true,
 				javascript = true,
@@ -911,6 +914,7 @@ do
 			-- python = { "isort", "black" },
 			--
 			-- You can use 'stop_after_first' to run the first available formatter from the list
+			php = { "prettierd", "php_cs_fixer" },
 			html = { "prettierd" },
 			css = { "prettierd" },
 			javascript = { "prettierd" },
