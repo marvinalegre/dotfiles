@@ -907,6 +907,18 @@ do
 		default_format_opts = {
 			lsp_format = "fallback", -- Use external formatters if configured below, otherwise use LSP formatting. Set to `false` to disable LSP formatting entirely.
 		},
+
+		formatters = {
+			prettierd_php = {
+				command = "prettierd",
+				args = { "--parser=php", "$FILENAME" },
+			},
+			prettierd_html = {
+				command = "prettierd",
+				args = { "--parser=html", "$FILENAME" },
+			},
+		},
+
 		-- You can also specify external formatters in here.
 		formatters_by_ft = {
 			-- rust = { 'rustfmt' },
@@ -914,7 +926,7 @@ do
 			-- python = { "isort", "black" },
 			--
 			-- You can use 'stop_after_first' to run the first available formatter from the list
-			php = { "prettierd", "php_cs_fixer" },
+			php = { "prettierd_php", "prettierd_html" },
 			html = { "prettierd" },
 			css = { "prettierd" },
 			javascript = { "prettierd" },
