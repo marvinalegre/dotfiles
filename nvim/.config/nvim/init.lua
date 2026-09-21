@@ -882,7 +882,7 @@ do
 			local enabled_filetypes = {
 				lua = true,
 				-- python = true,
-				php = true,
+				-- php = true,
 				html = true,
 				css = true,
 				javascript = true,
@@ -905,7 +905,7 @@ do
 			end
 		end,
 		default_format_opts = {
-			lsp_format = "fallback", -- Use external formatters if configured below, otherwise use LSP formatting. Set to `false` to disable LSP formatting entirely.
+			lsp_format = false, -- Use external formatters if configured below, otherwise use LSP formatting. Set to `false` to disable LSP formatting entirely.
 		},
 
 		formatters = {
@@ -926,7 +926,8 @@ do
 			-- python = { "isort", "black" },
 			--
 			-- You can use 'stop_after_first' to run the first available formatter from the list
-			php = { "prettierd_php", "prettierd_html" },
+			-- php = { "prettierd_php", "prettierd_html" },
+			-- php = { "mago_format" },
 			html = { "prettierd" },
 			css = { "prettierd" },
 			javascript = { "prettierd" },
@@ -944,9 +945,23 @@ do
 		},
 	})
 
+	local conform = require("conform")
+
 	vim.keymap.set({ "n", "v" }, "<leader>f", function()
-		require("conform").format({ async = true })
+		conform.format({ async = true })
 	end, { desc = "[F]ormat buffer" })
+
+	vim.keymap.set("n", "<leader>fp", function()
+		conform.format({
+			formatters = { "prettierd_php" },
+		})
+	end)
+
+	vim.keymap.set("n", "<leader>fh", function()
+		conform.format({
+			formatters = { "prettierd_html" },
+		})
+	end)
 end
 
 -- ============================================================
