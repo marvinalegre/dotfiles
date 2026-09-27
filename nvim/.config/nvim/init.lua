@@ -897,6 +897,7 @@ do
 				sh = true,
 				bash = true,
 				xml = true,
+				zig = true,
 			}
 			if enabled_filetypes[vim.bo[bufnr].filetype] then
 				return { timeout_ms = 500 }
@@ -916,6 +917,12 @@ do
 			prettierd_html = {
 				command = "prettierd",
 				args = { "--parser=html", "$FILENAME" },
+			},
+
+			zigfmt = {
+				command = "zig",
+				args = { "fmt", "--stdin" },
+				stdin = true,
 			},
 		},
 
@@ -942,6 +949,7 @@ do
 			sh = { "shfmt" },
 			bash = { "shfmt" },
 			xml = { "xmlformatter" },
+			zig = { "zigfmt" },
 		},
 	})
 
