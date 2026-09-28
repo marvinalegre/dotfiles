@@ -898,6 +898,7 @@ do
 				bash = true,
 				xml = true,
 				zig = true,
+				go = true,
 			}
 			if enabled_filetypes[vim.bo[bufnr].filetype] then
 				return { timeout_ms = 500 }
@@ -950,6 +951,7 @@ do
 			bash = { "shfmt" },
 			xml = { "xmlformatter" },
 			zig = { "zigfmt" },
+			go = { "gofmt" },
 		},
 	})
 
