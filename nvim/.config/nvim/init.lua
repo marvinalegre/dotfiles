@@ -255,6 +255,11 @@ do
 	vim.keymap.set("n", "<leader>ic", "oconsole.log()<Left>", { desc = "Insert console log" })
 	vim.keymap.set("n", "<leader>ib", "oborder: 1px solid black;<Esc>", { desc = "Insert css border" })
 
+	vim.keymap.set("n", "<leader>t", function()
+		vim.cmd("lcd " .. vim.fn.expand("%:p:h"))
+		vim.cmd("terminal")
+	end, { desc = "Open [T]erminal here" })
+
 	-- [[ Basic Autocommands ]]
 	--  See `:help lua-guide-autocommands`
 
@@ -386,6 +391,31 @@ do
 			topdelete = { text = "‾" }, ---@diagnostic disable-line: missing-fields
 			changedelete = { text = "~" }, ---@diagnostic disable-line: missing-fields
 		},
+
+		on_attach = function(bufnr)
+			local gs = package.loaded.gitsigns
+
+			vim.keymap.set("n", "<leader>hs", gs.stage_hunk, { buffer = bufnr, desc = "Stage hunk" })
+			vim.keymap.set("n", "<leader>hr", gs.reset_hunk, { buffer = bufnr, desc = "Reset hunk" })
+			vim.keymap.set("n", "<leader>hp", gs.preview_hunk, { buffer = bufnr, desc = "Preview hunk" })
+			vim.keymap.set("n", "<leader>hu", gs.undo_stage_hunk, { buffer = bufnr, desc = "Undo stage hunk" })
+
+			vim.keymap.set("n", "]h", function()
+				gs.nav_hunk("next")
+			end, { buffer = bufnr, desc = "Next hunk" })
+
+			vim.keymap.set("n", "[h", function()
+				gs.nav_hunk("prev")
+			end, { buffer = bufnr, desc = "Previous hunk" })
+
+			vim.keymap.set("n", "<leader>hH", function()
+				gs.nav_hunk("first")
+			end, { buffer = bufnr, desc = "First hunk" })
+
+			vim.keymap.set("n", "<leader>hL", function()
+				gs.nav_hunk("last")
+			end, { buffer = bufnr, desc = "Last hunk" })
+		end,
 	})
 
 	-- Useful plugin to show you pending keybinds.
@@ -397,7 +427,7 @@ do
 		-- Document existing key chains
 		spec = {
 			{ "<leader>s", group = "[S]earch", mode = { "n", "v" } },
-			{ "<leader>t", group = "[T]oggle" },
+			-- { "<leader>t", group = "[T]oggle" },
 			{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } }, -- Enable gitsigns recommended keymaps first
 			{ "gr", group = "LSP Actions", mode = { "n" } },
 		},
