@@ -1186,5 +1186,14 @@ do
 	-- require 'custom.plugins'
 end
 
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "c", "cpp", "h" },
+	callback = function()
+		vim.opt_local.expandtab = true
+		vim.opt_local.shiftwidth = 3
+		vim.opt_local.tabstop = 3
+	end,
+})
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
