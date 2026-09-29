@@ -257,7 +257,7 @@ do
 
 	vim.keymap.set("n", "<leader>t", function()
 		vim.cmd("lcd " .. vim.fn.expand("%:p:h"))
-		vim.cmd("terminal")
+		vim.cmd("botright vsplit | terminal")
 	end, { desc = "Open [T]erminal here" })
 
 	-- [[ Basic Autocommands ]]
@@ -924,6 +924,7 @@ do
 				markdown = true,
 				sql = true,
 				c = true,
+				cpp = true,
 				sh = true,
 				bash = true,
 				xml = true,
@@ -977,6 +978,7 @@ do
 			markdown = { "prettierd" },
 			sql = { "sql_formatter" },
 			c = { "clang-format" },
+			cpp = { "clang-format" },
 			sh = { "shfmt" },
 			bash = { "shfmt" },
 			xml = { "xmlformatter" },
