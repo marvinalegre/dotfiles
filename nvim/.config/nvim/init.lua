@@ -249,13 +249,15 @@ do
 		"n",
 		"<leader>is",
 		"oconst sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));<CR>await sleep(2000)<Esc>",
-		{ desc = "Insert JS sleep helper and await" }
+		{ desc = "JS sleep helper and await" }
 	)
-	vim.keymap.set("n", "<leader>ih", "oconsole.log('hit');<Esc>", { desc = "Insert hit line" })
-	vim.keymap.set("n", "<leader>ic", "oconsole.log()<Left>", { desc = "Insert console log" })
-	vim.keymap.set("n", "<leader>ib", "oborder: 1px solid black;<Esc>", { desc = "Insert css border" })
+	vim.keymap.set("n", "<leader>ihj", "oconsole.log('hit');<Esc>", { desc = "Javascript" })
+	vim.keymap.set("n", "<leader>ihc", 'oprintf("%s\\n", "hit");<Esc>', { desc = "C" })
+	vim.keymap.set("n", "<leader>ilj", "oconsole.log()<Left>", { desc = "Javascript" })
+	vim.keymap.set("n", "<leader>ilc", 'oprintf("%\\n",);<Esc>6<Left>a', { desc = "C" })
+	vim.keymap.set("n", "<leader>ib", "oborder: 1px solid black;<Esc>", { desc = "CSS border" })
 
-	vim.keymap.set("n", "<leader>t", function()
+	vim.keymap.set("n", "<leader>tt", function()
 		vim.cmd("lcd " .. vim.fn.expand("%:p:h"))
 		vim.cmd("botright vsplit | terminal")
 	end, { desc = "Open [T]erminal here" })
@@ -427,9 +429,13 @@ do
 		-- Document existing key chains
 		spec = {
 			{ "<leader>s", group = "[S]earch", mode = { "n", "v" } },
-			-- { "<leader>t", group = "[T]oggle" },
-			{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } }, -- Enable gitsigns recommended keymaps first
+			{ "<leader>t", group = "[T]oggle" },
+			{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
 			{ "gr", group = "LSP Actions", mode = { "n" } },
+
+			{ "<leader>i", group = "[I]nsert" },
+			{ "<leader>ih", group = "[H]it" },
+			{ "<leader>il", group = "[L]og" },
 		},
 	})
 
