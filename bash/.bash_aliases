@@ -14,7 +14,6 @@ alias rd='nmcli radio wifi off'
 alias zi='cd ~/zettelkasten/; c'
 alias dotfiles='cd ~/.dotfiles || return; tmux new -s dotfiles'
 alias f='tmux-sessionizer'
-alias x='gcc -Wall -Wextra -std=c23 -pedantic foo.c && ./a.out'
 
 # navigation/status
 alias g='git'

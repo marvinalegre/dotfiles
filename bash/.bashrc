@@ -114,6 +114,11 @@ export FZF_CTRL_R_OPTS='--height=100%'
 
 bind -x '"\C-k": clear'
 
+x() {
+  gcc -Wall -Wextra -std=c23 -pedantic *.c && ./a.out
+  rm ./a.out 2>/dev/null
+}
+
 br() {
   # If no argument is given, default to 2 (20%)
   local val=${1:-2}
