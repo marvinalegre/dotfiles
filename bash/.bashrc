@@ -129,6 +129,8 @@ mkcd() {
   mkdir -p "$1" && cd "$1"
 }
 
+ring() { paplay /usr/share/sounds/freedesktop/stereo/complete.oga; }
+
 z() {
   local file
   file=$(find ~/zettelkasten -type f | fzf) || return
