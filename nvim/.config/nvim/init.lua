@@ -1012,6 +1012,12 @@ do
 			formatters = { "prettierd_html" },
 		})
 	end)
+
+	vim.filetype.add({
+		extension = {
+			ejs = "html",
+		},
+	})
 end
 
 -- ============================================================
