@@ -1,0 +1,359 @@
+#!/usr/bin/env node
+// tt.js - a terminal typing test for practicing JavaScript.
+//
+// Usage:
+//   node tt.js              # 30-second test
+//   node tt.js -t 60        # 60-second test
+//   node tt.js -w 100       # generate 100 tokens
+//   node tt.js -c 30        # wrap lines at 30 columns (default 40)
+//   node tt.js -m english   # start in English words mode (default: js)
+//
+// Keys: type normally, Backspace to correct, Tab to restart,
+// Ctrl-E to switch between JS and English words, Esc to quit.
+// No dependencies. Requires Node.js 14 or newer.
+
+const ENGLISH_WORDS = (
+  "the of and to a in is it you that he was for on are with as I his " +
+  "they be at one have this from or had by but what some we can out other were all " +
+  "there when up use your how said an each she which do their time if will way about " +
+  "many then them write would like so these her long make thing see him two has look " +
+  "more day could go come did number sound no most people my over know water than call " +
+  "first who may down side been now find any new work part take get place made live where " +
+  "after back little only round man year came show every good me give our under name very " +
+  "through just form sentence great think say help low line differ turn cause much mean before " +
+  "move right boy old too same tell does set three want air well also play small end " +
+  "put home read hand port large spell add even land here must big high such follow act " +
+  "why ask men change went light kind off need house picture try us again animal point mother world " +
+  "near build self earth father head stand own page should country found answer school grow study " +
+  "still learn plant cover food sun four between state keep eye never last let thought city tree " +
+  "cross farm hard start might story saw far sea draw left late run while press close night real " +
+  "life few north open seem together next white children begin got walk example ease paper group always music " +
+  "those both mark often letter until mile river car feet care second book carry took science eat room friend " +
+  "began idea fish mountain stop once base hear horse cut sure watch color face wood main enough plain girl usual young " +
+  "ready above ever red list though feel talk bird soon body dog family direct pose leave song measure door product " +
+  "black short class wind question happen complete ship area half rock order fire south problem piece told knew " +
+  "pass since top whole king space heard best hour better true during hundred five remember step early hold west ground " +
+  "interest reach fast sing listen six table travel less morning ten simple several toward war lay against pattern slow " +
+  "center love person money serve appear road map rain rule govern pull cold notice voice unit power town fine certain fly " +
+  "fall lead cry dark machine note wait plan figure star box field rest correct able pound done beauty drive stood contain front " +
+  "teach week final gave green oh quick develop ocean warm free minute strong special mind behind clear tail produce fact street inch " +
+  "nothing course stay wheel full force blue object decide surface deep moon island foot system busy test record boat common gold possible " +
+  "become bring believe hope kill ago happy sorry parent health anything everything someone nobody everyone finally already across wish usually " +
+  "gift paint cook dinner window choose enjoy ill apple bread chair phone orange tomorrow"
+).split(" ").filter(Boolean);
+
+// JavaScript-focused tokens. Each entry has no spaces, so the layout stays intact.
+const JS_WORDS = (
+  "const let var function return async await Promise then catch try throw new class extends " +
+  "this super import export default from typeof instanceof null undefined true false " +
+  "if else switch case break continue for while do of in yield map filter reduce forEach " +
+  "find some every includes push pop shift unshift slice splice join split trim replace " +
+  "Object.keys Object.entries Object.assign JSON.parse JSON.stringify Array.from Array.isArray " +
+  "console.log document.querySelector addEventListener fetch setTimeout setInterval " +
+  "Promise.all Math.max Math.min Math.floor Number.parseInt String.prototype " +
+  "=== !== => ?. ?? ... && || += -= *= /= ++ -- {} [] () `${} ; : , . " +
+  "const() let() () => {} [0] [i] i++ arr.length str.length this.state props.children " +
+  "module.exports require('fs') export const useState useEffect ref.current " +
+  "err => console.error(err) new Map() new Set() new Error() obj?.prop " +
+  "items.map(x => x * 2) array.reduce((a, b) => a + b, 0) .then(res => res.json()) " +
+  "0 1 2 3 4 5 6 7 8 9 10 12 16 24 32 42 64 100 128 255 256 404 500 1000 1024 3.14 0.5 " +
+  "0x1F 0xFF 0b1010 1e3 1_000_000 -1 -42 3.14159 2.718 0.001 60 365 86400 9999 " +
+  "i=0 n=10 x=1 y=2 a=5 b=3 arr[0] arr[1] arr[2] n*2 n+1 x-1 10/2 2**8 7%3 " +
+  "setTimeout(fn, 500) Math.random()*100 toFixed(2) parseInt('42', 10) 1e-6 " +
+  "rgb(255,0,128) 127.0.0.1 :8080 v2.4.1 2024 11/11/2026 12:30"
+).split(" ").filter(Boolean);
+
+const C = {
+  reset: "\x1b[0m",
+  bold: "\x1b[1m",
+  dim: "\x1b[2m",
+  reverse: "\x1b[7m",
+  green: "\x1b[32m",
+  red: "\x1b[31m",
+};
+
+const VISIBLE_ROWS = 2; // only the current line and the one below it are shown
+function footerText() {
+  const other = state.modeName === "js" ? "english" : "js";
+  return `mode: ${state.modeName}   ctrl-e: ${other}   tab: restart   esc: quit`;
+}
+
+function parseArgs(argv) {
+  let seconds = 30;
+  let words = 200;
+  let cols = 40;
+  let mode = "js";
+  for (let i = 2; i < argv.length; i++) {
+    if ((argv[i] === "-t" || argv[i] === "--time") && argv[i + 1]) {
+      seconds = parseInt(argv[++i], 10);
+    } else if ((argv[i] === "-w" || argv[i] === "--words") && argv[i + 1]) {
+      words = parseInt(argv[++i], 10);
+    } else if ((argv[i] === "-c" || argv[i] === "--cols") && argv[i + 1]) {
+      cols = parseInt(argv[++i], 10);
+    } else if ((argv[i] === "-m" || argv[i] === "--mode") && argv[i + 1]) {
+      mode = argv[++i];
+    }
+  }
+  if (!(seconds > 0) || !(words > 0) || !(cols > 0)) {
+    console.error("Invalid -t, -w, or -c value. All must be positive numbers.");
+    process.exit(1);
+  }
+  if (mode !== "js" && mode !== "english") {
+    console.error('Invalid -m value. Use "js" or "english".');
+    process.exit(1);
+  }
+  return { seconds, words, cols, mode };
+}
+
+function randomText(count, list) {
+  const picked = [];
+  for (let i = 0; i < count; i++) {
+    picked.push(list[Math.floor(Math.random() * list.length)]);
+  }
+  return picked.join(" ");
+}
+
+// Returns the [row, col] of every character, wrapping at word boundaries.
+function layout(text, width) {
+  const positions = [];
+  let row = 0;
+  let col = 0;
+  for (const word of text.split(" ")) {
+    if (col + word.length > width && col > 0) {
+      row++;
+      col = 0;
+    }
+    for (let k = 0; k < word.length; k++) {
+      positions.push([row, col]);
+      col++;
+    }
+    positions.push([row, col]); // the space after the word
+    col++;
+  }
+  return positions;
+}
+
+const state = {
+  mode: "test", // "test" or "results"
+  seconds: 30,
+  wordCount: 200,
+  maxCols: 40,
+  wordSet: JS_WORDS,
+  modeName: "js",
+  target: "",
+  width: 40,
+  positions: [],
+  typed: [],
+  presses: 0,
+  correctPresses: 0,
+  start: null,
+  timer: null,
+  results: null,
+};
+
+function elapsedSec() {
+  if (state.start === null) return 0;
+  return Math.min((Date.now() - state.start) / 1000, state.seconds);
+}
+
+function countCorrect() {
+  let n = 0;
+  for (let i = 0; i < state.typed.length; i++) {
+    if (state.typed[i] === state.target[i]) n++;
+  }
+  return n;
+}
+
+function cell(i) {
+  const ch = state.target[i];
+  if (i === state.typed.length) {
+    return C.reverse + ch + C.reset; // cursor
+  }
+  if (i < state.typed.length) {
+    if (state.typed[i] === ch) return C.green + ch + C.reset;
+    return C.red + (ch === " " ? "_" : ch) + C.reset;
+  }
+  return C.dim + ch + C.reset;
+}
+
+function render() {
+  const out = [];
+
+  if (state.mode === "results") {
+    const r = state.results;
+    out.push(
+      `${C.bold}Results${C.reset}`,
+      "",
+      `  wpm        ${r.wpm.toFixed(1)}`,
+      `  raw wpm    ${r.raw.toFixed(1)}`,
+      `  accuracy   ${r.acc.toFixed(1)}%`,
+      `  chars      ${r.correct}/${r.typed} correct`,
+      `  time       ${r.elapsed.toFixed(1)}s`,
+      "",
+      "r: retry    q: quit"
+    );
+  } else {
+    const elapsed = elapsedSec();
+    const remaining = Math.max(0, state.seconds - elapsed);
+    const wpm = countCorrect() / 5 / (Math.max(elapsed, 0.5) / 60);
+    out.push(`${C.bold}${remaining.toFixed(1)}s   ${wpm.toFixed(1)} wpm${C.reset}`, "", "");
+
+    // Show the line the cursor is on and the one below it. When the cursor
+    // reaches a new line, the finished line disappears.
+    const cursorIdx = Math.min(state.typed.length, state.target.length - 1);
+    const firstRow = state.positions[cursorIdx][0];
+    const lines = Array.from({ length: VISIBLE_ROWS }, () => "");
+    for (let i = 0; i < state.target.length; i++) {
+      const r = state.positions[i][0] - firstRow;
+      if (r >= 0 && r < VISIBLE_ROWS) lines[r] += cell(i);
+    }
+    const termCols = process.stdout.columns || 80;
+    const pad = " ".repeat(Math.max(0, Math.floor((termCols - state.width) / 2)));
+    for (const line of lines) out.push(pad + line);
+
+    out.push("", "", `${C.dim}${footerText()}${C.reset}`);
+  }
+
+  // Place each line at a fixed screen row so the terminal never scrolls.
+  let frame = "";
+  out.forEach((line, i) => {
+    frame += `\x1b[${i + 1};1H${line}\x1b[K`;
+  });
+  process.stdout.write(frame + "\x1b[J");
+}
+
+// Recompute line wrapping from the current terminal width. Called at the start
+// of each test and whenever the terminal is resized (for example, when zooming).
+function relayout() {
+  const termCols = process.stdout.columns || 80;
+  state.width = Math.max(10, Math.min(termCols - 4, state.maxCols));
+  state.positions = layout(state.target, state.width);
+}
+
+function startTest() {
+  if (state.timer) clearInterval(state.timer);
+  state.mode = "test";
+  state.target = randomText(state.wordCount, state.wordSet);
+  relayout();
+  state.typed = [];
+  state.presses = 0;
+  state.correctPresses = 0;
+  state.start = null;
+  state.results = null;
+  state.timer = setInterval(tick, 100);
+  render();
+}
+
+function tick() {
+  if (state.mode !== "test") return;
+  if (state.start !== null && elapsedSec() >= state.seconds) {
+    finishTest();
+    return;
+  }
+  render();
+}
+
+function finishTest() {
+  clearInterval(state.timer);
+  state.timer = null;
+  const elapsed = elapsedSec();
+  const minutes = Math.max(elapsed, 0.5) / 60;
+  const correct = countCorrect();
+  state.results = {
+    wpm: correct / 5 / minutes,
+    raw: state.typed.length / 5 / minutes,
+    acc: state.presses ? (state.correctPresses / state.presses) * 100 : 0,
+    correct,
+    typed: state.typed.length,
+    elapsed,
+  };
+  state.mode = "results";
+  render();
+}
+
+function typeChar(ch) {
+  if (state.mode !== "test") return;
+  if (state.typed.length >= state.target.length) return;
+  if (state.start === null) state.start = Date.now();
+  state.presses++;
+  if (ch === state.target[state.typed.length]) state.correctPresses++;
+  state.typed.push(ch);
+  if (state.typed.length === state.target.length) {
+    finishTest();
+    return;
+  }
+  render();
+}
+
+function restoreTerminal() {
+  if (state.timer) clearInterval(state.timer);
+  if (process.stdin.isTTY) process.stdin.setRawMode(false);
+  process.stdout.write("\x1b[?25h\x1b[?1049l"); // show cursor, leave alternate screen
+}
+
+function quit() {
+  restoreTerminal();
+  process.exit(0);
+}
+
+function onKey(data) {
+  if (data === "\u0003") return quit(); // Ctrl-C
+
+  if (data === "\x05") { // Ctrl-E: switch word set and start a new test
+    state.modeName = state.modeName === "js" ? "english" : "js";
+    state.wordSet = state.modeName === "js" ? JS_WORDS : ENGLISH_WORDS;
+    return startTest();
+  }
+
+  if (state.mode === "results") {
+    if (data === "r" || data === "R") return startTest();
+    if (data === "q" || data === "Q" || data === "\x1b") return quit();
+    return;
+  }
+
+  // A lone Esc quits. Longer escape sequences (arrow keys etc.) are ignored.
+  if (data === "\x1b") return quit();
+  if (data.startsWith("\x1b")) return;
+  if (data === "\t") return startTest();
+
+  // Handle each character, so pasted text also works.
+  for (const ch of data) {
+    if (ch === "\x7f" || ch === "\b") {
+      if (state.typed.length) state.typed.pop();
+    } else if (ch >= " " && ch <= "~") {
+      typeChar(ch);
+      if (state.mode !== "test") return;
+    }
+  }
+  render();
+}
+
+function main() {
+  const args = parseArgs(process.argv);
+  state.seconds = args.seconds;
+  state.wordCount = args.words;
+  state.maxCols = args.cols;
+  state.modeName = args.mode;
+  state.wordSet = args.mode === "js" ? JS_WORDS : ENGLISH_WORDS;
+
+  if (!process.stdin.isTTY || !process.stdout.isTTY) {
+    console.error("tt.js needs an interactive terminal.");
+    process.exit(1);
+  }
+
+  process.stdout.write("\x1b[?1049h\x1b[?25l"); // alternate screen, hide cursor
+  process.stdin.setRawMode(true);
+  process.stdin.setEncoding("utf8");
+  process.stdin.resume();
+  process.stdin.on("data", onKey);
+  process.stdout.on("resize", () => {
+    if (state.mode === "test") relayout();
+    process.stdout.write("\x1b[2J"); // clear leftovers from the old size
+    render();
+  });
+  process.on("exit", restoreTerminal);
+
+  startTest();
+}
+
+main();
