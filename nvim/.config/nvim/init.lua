@@ -214,6 +214,7 @@ do
 	})
 
 	vim.keymap.set("n", "<leader>l", vim.diagnostic.setloclist, { desc = "Open diagnostic quickfix [L]ist" })
+	vim.keymap.set("n", "<leader>lc", "<cmd>lclose<cr>", { desc = "Close diagnostic [L]ocation list" })
 	vim.keymap.set("n", "<leader>w", vim.diagnostic.open_float, { desc = "[w] Open float" })
 
 	-- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
@@ -245,16 +246,11 @@ do
 	-- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 	-- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
-	vim.keymap.set(
-		"n",
-		"<leader>is",
-		"oconst sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));<CR>await sleep(2000)<Esc>",
-		{ desc = "JS sleep helper and await" }
-	)
-	vim.keymap.set("n", "<leader>ihj", "oconsole.log('hit');<Esc>", { desc = "Javascript" })
-	vim.keymap.set("n", "<leader>ihc", 'oprintf("%s\\n", "hit");<Esc>', { desc = "C" })
-	vim.keymap.set("n", "<leader>ilj", "oconsole.log()<Left>", { desc = "Javascript" })
-	vim.keymap.set("n", "<leader>ilc", 'oprintf("%\\n",);<Esc>6<Left>a', { desc = "C" })
+	vim.keymap.set("n", "<leader>is", "oawait new Promise(r => setTimeout(r, 2000))<Esc>", { desc = "JS sleep" })
+	vim.keymap.set("n", "<leader>ih", "oconsole.log('hit');<Esc>", { desc = "Javascript" })
+	-- vim.keymap.set("n", "<leader>ihc", 'oprintf("%s\\n", "hit");<Esc>', { desc = "C" })
+	vim.keymap.set("n", "<leader>il", "oconsole.log()<Left>", { desc = "Javascript" })
+	-- vim.keymap.set("n", "<leader>ilc", 'oprintf("%\\n",);<Esc>6<Left>a', { desc = "C" })
 	vim.keymap.set("n", "<leader>ib", "oborder: 1px solid black;<Esc>", { desc = "CSS border" })
 
 	vim.keymap.set("n", "<leader>tt", function()
@@ -397,10 +393,10 @@ do
 		on_attach = function(bufnr)
 			local gs = package.loaded.gitsigns
 
-			vim.keymap.set("n", "<leader>hs", gs.stage_hunk, { buffer = bufnr, desc = "Stage hunk" })
-			vim.keymap.set("n", "<leader>hr", gs.reset_hunk, { buffer = bufnr, desc = "Reset hunk" })
-			vim.keymap.set("n", "<leader>hp", gs.preview_hunk, { buffer = bufnr, desc = "Preview hunk" })
-			vim.keymap.set("n", "<leader>hu", gs.undo_stage_hunk, { buffer = bufnr, desc = "Undo stage hunk" })
+			-- vim.keymap.set("n", "<leader>hs", gs.stage_hunk, { buffer = bufnr, desc = "Stage hunk" })
+			-- vim.keymap.set("n", "<leader>hr", gs.reset_hunk, { buffer = bufnr, desc = "Reset hunk" })
+			-- vim.keymap.set("n", "<leader>hp", gs.preview_hunk, { buffer = bufnr, desc = "Preview hunk" })
+			-- vim.keymap.set("n", "<leader>hu", gs.undo_stage_hunk, { buffer = bufnr, desc = "Undo stage hunk" })
 
 			vim.keymap.set("n", "]h", function()
 				gs.nav_hunk("next")
